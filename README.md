@@ -14,7 +14,7 @@ To run it, first you need an Hazelcast cluster. Download Hazelcast 3.6-EA3 from 
     
 This will start 3 hazelcast nodes, with default configuration, listening for connections on port 5701, 5702 and 5703.    
 Then you can start from visual studio the owin self hosted processes of the solution Sample folder. 
-VisualStudio should open a browser window with URL http://localhost:52682 . This is a simple javascript client that connects to the forst owin process. Open URL http://localhost:52682/index2.html to get a second Javascript client, connected to the second owin process. 
+VisualStudio should open a browser window with URL [http://localhost:52682](http://localhost:52682/). This is a simple javascript client that connects to the first Owin process. Open URL [http://localhost:52682/index2.html](http://localhost:52682/index2.html) to get a second Javascript client, connected to the second owin process. 
 That's all folks!
 
 Once the application is running you can shutdown 1 or 2 hazelcast nodes, after a few seconds the owin processes should connect to the remaining node alive. 
