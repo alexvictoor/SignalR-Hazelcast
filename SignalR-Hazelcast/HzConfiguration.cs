@@ -19,6 +19,7 @@ namespace SignalR.Hazelcast
             FastMode = false;
             TopicName = "signalrTopic";
             CounterName = "signalrCounter";
+            LockName = "signalrLock";
         }
 
         public bool FastMode { get; set; }
@@ -26,6 +27,6 @@ namespace SignalR.Hazelcast
         public string TopicName { get; set; }
 
         public string CounterName { get; set; }
-
+        public string LockName { get; set; }
     }
 }

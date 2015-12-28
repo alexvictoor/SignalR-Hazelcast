@@ -13,6 +13,7 @@ namespace SignalR.Hazelcast
     {
         private readonly ITopic<HzMessage> _topic;
         private readonly IAtomicLong _counter;
+        private readonly ILock _hzLock;
 
         public HzScaleoutMessageBus(IDependencyResolver resolver, HzConfiguration configuration, IHazelcastInstance hzInstance) : base(resolver, configuration)
         {
@@ -26,6 +27,7 @@ namespace SignalR.Hazelcast
             });
 
             _counter = hzInstance.GetAtomicLong(configuration.CounterName);
+            _hzLock = hzInstance.GetLock(configuration.LockName);
         }
 
 
@@ -40,10 +42,17 @@ namespace SignalR.Hazelcast
         {
             // TODO real logs
             //Console.Out.WriteLine("About to send something 2");
-           
-            var sqn = (ulong)_counter.IncrementAndGet();
-            var hzMessage = new HzMessage {Id = sqn, ScaleoutMessage = new ScaleoutMessage(messages)};
-            _topic.Publish(hzMessage);
+            _hzLock.Lock();
+            try
+            {
+                var sqn = (ulong) _counter.IncrementAndGet();
+                var hzMessage = new HzMessage {Id = sqn, ScaleoutMessage = new ScaleoutMessage(messages)};
+                _topic.Publish(hzMessage);
+            }
+            finally
+            {
+                _hzLock.Unlock();
+            }
             return Task.WhenAll();
         }
     }
