@@ -19,24 +19,27 @@ namespace SignalR.Hazelcast
             _topic = hzInstance.GetTopic<HzMessage>(configuration.TopicName);
             _topic.AddMessageListener(msg =>
             {
-                Console.Out.WriteLine("Just received something");
+                // TODO real logs
+                //Console.Out.WriteLine("Just received something");
                 var hzMessage = msg.GetMessageObject();
                 OnReceived(0, hzMessage.Id, hzMessage.ScaleoutMessage);
             });
 
-            _counter = hzInstance.GetAtomicLong("counter");
+            _counter = hzInstance.GetAtomicLong(configuration.CounterName);
         }
 
 
         protected override Task Send(int streamIndex, IList<Message> messages)
         {
-            Console.Out.WriteLine("About to send something");
+            // TODO real logs
+            //Console.Out.WriteLine("About to send something");
             return Send(messages);
         }
 
         protected override Task Send(IList<Message> messages)
         {
-            Console.Out.WriteLine("About to send something 2");
+            // TODO real logs
+            //Console.Out.WriteLine("About to send something 2");
            
             var sqn = (ulong)_counter.IncrementAndGet();
             var hzMessage = new HzMessage {Id = sqn, ScaleoutMessage = new ScaleoutMessage(messages)};

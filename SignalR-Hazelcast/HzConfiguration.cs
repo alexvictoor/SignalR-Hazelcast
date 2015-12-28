@@ -18,10 +18,14 @@ namespace SignalR.Hazelcast
         {
             FastMode = false;
             TopicName = "signalrTopic";
+            CounterName = "signalrCounter";
         }
 
         public bool FastMode { get; set; }
 
         public string TopicName { get; set; }
+
+        public string CounterName { get; set; }
+
     }
 }
