@@ -23,7 +23,10 @@ namespace SignalR.Hazelcast
                 // TODO real logs
                 //Console.Out.WriteLine("Just received something");
                 var hzMessage = msg.GetMessageObject();
-                OnReceived(0, hzMessage.Id, hzMessage.ScaleoutMessage);
+                lock (_hzLock)
+                {
+                    OnReceived(0, hzMessage.Id, hzMessage.ScaleoutMessage);
+                }
             });
 
             _counter = hzInstance.GetAtomicLong(configuration.CounterName);
